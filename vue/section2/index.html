@@ -21,7 +21,7 @@
       <!-- data 사용 -->
       <p>{{ courseGoal }}</p>
       <!-- methods 사용 -->
-      <p>{{ outputGoal() }}</p>
+      <p v-html="outputGoal()"></p>
       <!-- v-bind: Vue 에게 바인딩 지시-->
       <p>Learn about <a v-bind:href="vueLink">Vue</a></p>
     </section>

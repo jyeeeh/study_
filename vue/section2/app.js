@@ -6,7 +6,8 @@ const app = Vue.createApp({
     //data는 그 자체로 함수or메서드
     data() {
         return {
-            courseGoal: 'Finished Vue',
+            courseGoalA: 'Finished Vue@@@',
+            courseGoalB: '<h2>Master Vue@@@</h2>',
             vueLink: 'https://ko.vuejs.org/guide/quick-start'
         };
     },
@@ -19,9 +20,11 @@ const app = Vue.createApp({
             const randomNumber = Math.random();
 
             if(randomNumber<0.5){
-                return 'Learn Vue';
+                // return 'Learn Vue';
+                // this 키워드로 변환
+                return this.courseGoalA;
             }else{
-                return 'Master Vue';
+                return this.courseGoalB;
             }
         }
 
