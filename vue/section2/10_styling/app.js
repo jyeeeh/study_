@@ -6,6 +6,14 @@ const app = Vue.createApp({
             boxCSelected : false
         };
     },
+    // 연산 프로퍼티 사용 
+    // 동적 클래스 코드 자주 사용 시 
+    computed: {
+        boxAClasses(){
+            // 객체로 반환
+            return {active: this.boxASelected };
+        }
+    },
 
     methods: {
         boxSelected(box){

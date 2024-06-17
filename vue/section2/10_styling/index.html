@@ -19,14 +19,14 @@
     <section id="styling">
       <div 
       class="demo"
-      :class="{active: boxASelected}"
+      :class="boxAClasses"
        @click="boxSelected('A')"
       ></div>
 
       <div class="demo"
       :class="{active: boxBSelected}"
        @click="boxSelected('B')"></div>
-       
+       <!--클래식 바인딩  -->
       <div class="demo"
       :class="{active: boxCSelected}"
        @click="boxSelected('C')"></div>
