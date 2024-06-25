@@ -24,7 +24,7 @@
       <!-- 길이 0 이면 p 문단 보여줌 -->
       <p v-if="goals.length===0">No goals have been added yet - please start adding some!</p>
       <ul v-else>
-        <li v-for="(goal, index) in goals">{{ goal }} - {{ index }}</li>
+        <li v-for="(goal, index) in goals" @click="removeGoal(index)">{{ goal }} - {{ index }}</li>
       </ul>
       <ul>
         <!-- 두 프로퍼티 값 출력 됨 -->
