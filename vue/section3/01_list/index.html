@@ -23,8 +23,16 @@
       <!-- goals <= data 에서 지정한 프로퍼티 (배열이라 length 프로퍼티를 가짐) -->
       <!-- 길이 0 이면 p 문단 보여줌 -->
       <p v-if="goals.length===0">No goals have been added yet - please start adding some!</p>
-      <ul v-else-if="goals.length>0">
-        <li>Goal</li>
+      <ul v-else>
+        <li v-for="(goal, index) in goals">{{ goal }} - {{ index }}</li>
+      </ul>
+      <ul>
+        <!-- 두 프로퍼티 값 출력 됨 -->
+        <li v-for="(value,key,index) in {name: 'Jihye', age: 29}">{{index+1}}번 {{ key }}은(는) {{ value }}</li>
+      </ul>
+      <!-- 숫자 loop 출력 -->
+      <ul>
+        <li v-for="num in 3">{{ num }}</li>
       </ul>
     </section>
   </body>
