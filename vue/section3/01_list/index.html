@@ -23,7 +23,7 @@
       <!-- goals <= data 에서 지정한 프로퍼티 (배열이라 length 프로퍼티를 가짐) -->
       <!-- 길이 0 이면 p 문단 보여줌 -->
       <p v-if="goals.length===0">No goals have been added yet - please start adding some!</p>
-      <ul>
+      <ul v-else-if="goals.length>0">
         <li>Goal</li>
       </ul>
     </section>
