@@ -9,7 +9,7 @@ export function valueToPoint(value, index, total) {
     const x = 0
     // 원의 외곽에 가까운 위치를 갖기 위함 조정
     const y = -value * 0.8
-    // 각도 계산 (Math.PI) <- 360도를 라디안으로 변환한 값
+    // 각도 계산 (Math.PI*2) <- 360도를 라디안으로 변환한 값
     const angle = ((Math.PI * 2) / total) * index
     // 회전 변환(회전 행렬 계산하는데 사용, 점의 좌표를 회전시킴)
     const cos = Math.cos(angle)
