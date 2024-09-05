@@ -2,7 +2,7 @@
 
 <script setup>
 // 상태 관리, 계산된 속성 만드는데 사용
-// ref : 반은형 데이터 정의 할 때 사용
+// ref : 반응형 데이터 정의 할 때 사용
 // computed : 반응형 데이터에서 파생된 값 계산할 때 사용
 import {ref, computed} from 'vue'
 
