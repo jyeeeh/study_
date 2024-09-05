@@ -1,4 +1,5 @@
 <!-- 정렬과 필터가 있는 그리드 -->
+
 <script setup>
 // 상태 관리, 계산된 속성 만드는데 사용
 // ref : 반은형 데이터 정의 할 때 사용
@@ -51,23 +52,96 @@ const filteredData = computed(() => {
   return data
 })
 
+// 데이터 정렬
 function sortBy(key) {
-  sortKey.value=key
-  sortOrders.value[key] *= -1
+  sortKey.value=key // 정렬 키 설정
+  sortOrders.value[key] *= -1 // 현재 키 오름, 내림차
 }
 
 // 주어진 문자열의 첫 글자를 대문자로 변환함
 function capitalize(str) {
-  // str.charAt(0) : 문자열 str의 첫 번째 문자 반환, str.slice(1) : 여기서는 1부터 끝까지~ 부분 문자열 반환 ex) hello -> ello 
-  // -> H + ello => Hello 
+  // str.charAt(0) : 문자열 str의 첫 번째 문자 반환, str.slice(1) : 여기서는 1부터 끝까지~ 부분 문자열 반환 ex) hello -> ello
+  // -> H + ello => Hello
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
 </script>
 
 <template>
+  <table v-if="filteredData.length">
+    <thead>
+<!--  sortBy로 해당 열(key) 기준으로 정렬 / 현재 정렬 중인 열이면 active 클래스 추가하여 시각적으로 표시   -->
+      <tr>
+        <th v-for="key in columns"
+          @click="sortBy(key)"
+          :class="{ active: sortKey == key}">
+          {{ capitalize(key) }}
+          <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc' ">
+          </span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="entry in filteredData">
+        <td v-for="key in columns">
+          {{ entry[key] }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p v-else> No matches found. </p>
 
 </template>
 
 <style>
+table {
+  border: 2px solid #42b983;
+  border-radius: 3px;
+  background-color: #fff;
+}
 
+th {
+  background-color: #42b983;
+  color: rgba(255, 255, 255, 0.66);
+  cursor: pointer;
+  user-select: none;
+}
+
+td {
+  background-color: #f9f9f9;
+}
+
+th,
+td {
+  min-width: 120px;
+  padding: 10px 20px;
+}
+
+th.active {
+  color: #fff;
+}
+
+th.active .arrow {
+  opacity: 1;
+}
+
+.arrow {
+  display: inline-block;
+  vertical-align: middle;
+  width: 0;
+  height: 0;
+  margin-left: 5px;
+  opacity: 0.66;
+}
+
+.arrow.asc {
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 4px solid #fff;
+}
+
+.arrow.dsc {
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #fff;
+}
 </style>
