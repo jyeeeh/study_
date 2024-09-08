@@ -43,9 +43,85 @@ watchEffect(() => { localStorage.setItem(STORAGE_KEY, JSON.stringify(todos.value
 function toggleAll(e){
   // input type="checkbox" 요소의 checked 상태를 기반으로 동작함
   // 사용자가 모든 할 일 완료 여부를 일괄적으로 바꾸는 '전체 선택' 체크 박스에 체크하거나 체크 해제할 때 함수 호출됨
-  todos.value.forEach((todos) => (todo.completed = e.target.checked))
+  todos.value.forEach((todo) => (todo.completed = e.target.checked))
 }
 
+// 할 일 추가
+function addTodo(e){
+  // e.target <- HTML(input element)
+  const value = e.target.value.trim()
+
+  if(value){
+    todos.value.push({
+      id: Date.now(),
+      title: value,
+      // 새로운 할 일은 기본적으로 완료되지 않은 상태이므로 false 처리
+      completed: false
+     })
+    // 사용자가 입력한 input 값 빈 문자열로 설정하여 추가된 후 입력 필드 비우기
+    e.target.value=''
+  }
+}
+// 특정 할 일 배열에서 삭제
+function removeTodo(todo){
+  // splice(인덱스, 삭제할 개수)
+  // todos.value.indexOf(todo) < 배열에서 todo 객체의 인덱스 위치 찾기
+  todos.value.splice(todos.value.indexOf(todo), 1)
+}
+
+let beforeEditCache=''
+
+// 수정 작업
+
+// todo 객체를 받아서 객체 수정
+// 1. 할 일 목록 수정 시작 할 때 editTodo 함수 호출 -> 2. 수정 전의 제목을 beforEditCache에 저장해두고
+// 3. 수정할 객체를 editedTodo.value 에 할당해서 수정할 수 있는 상태로 만듬
+function editTodo(todo){
+  beforeEditCache = todo.title
+  editedTodo.value=todo
+}
+// 수정 취소
+function cancleEdit(todo){
+  editedTodo.value=null
+  // 다시 집어넣음
+  todo.title=beforeEditCache
+}
+// 수정 완료
+function doneEdit(todo){
+  if(editedTodo.value){
+    // 할 일 수정 완료 후 null 로 설정
+    editedTodo.value=null
+    todo.title = todo.title.trim()
+    // 공백만 입력한 경우 'todo.title' 빈 문자열이 됨
+    // 할 일의 제목을 모두 지우고 완료버튼을 누르면 할 일 삭제되는 처리 기능
+    if(!todo.title) removeTodo(todo)
+  }
+}
+
+function removeCompleted(){
+  todos.value=filters.active(todos.value)
+}
+
+// window.location.hash < 현재 URL 해시 부분(#all, #completed) 가져옴
+// .replace(/#\/?/, '')는 해시에서 #과 선택적인 /를 제거 ex) #all -> all 로 변환
+// 1. URL의 해시 값 가져와서 route 로 변환 -> 2. route 값이 필터로 유효하면 업데이트
+// 3. else URL 해시 제거, 기본 필터 상태(all)로 설정
+
+// 해시 변경에 따라 필터링된 할 일 목록을 표시하는 기능 구현
+function onHashChange() {
+  const route = window.location.hash.replace(/#\/?/, '')
+  // const filters = {
+  //   all: (todos) => todos,
+  //   active: (todos) => todos.filter((todo) => !todo.completed),
+  //   completed: (todos) => todos.filter((todo) => todo.completed)
+  // }
+  if (filters[route]) {
+    visibility.value = route
+  } else {
+    window.location.hash = ''
+    visibility.value = 'all'
+  }
+}
 </script>
 
 <template>
