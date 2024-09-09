@@ -125,9 +125,57 @@ function onHashChange() {
 </script>
 
 <template>
+  <section class="todoapp">
+    <header class="header">
+      <h1>Header Line</h1>
+      <input
+          class="new-todo"
+          autofocus
+          placeholder="?"
+          @keyup.enter="addTodo"
+      >
+    </header>
+<!--  todos.length 존재할 경우 true 로 되어 섹션 보임 -->
+    <section class="main" v-show="todos.length">
+<!--      remaining < 할 일의 개수 계산하는 computed property -->
+<!--      remaining이 0일 경우 체크박스 자동으로 체크 -->
+<!--      @change => input 에서 값 변경될 때(체크박스 체크유무) toggleAll 메서드 호출 -->
+      <input
+          id="toggle-all"
+          class="toggle-all"
+          type="checkbox"
+          :checked="remaining===0"
+          @change="toggleAll"
+      >
+      <label for="toggle-all">Mark all as complete</label>
+      <ul class="todo-list">
+        <!-- :key (Vue에서 리스트 렌더링할 때 성능 최적화, 고유성 보장하기 위해 사용) -->
+        <!-- :class (동적 클랙스 바인딩, true 일 때 li요소에 completed 라는 클래스 추가)-->
+        <li
+          v-for="todo in filteredTodos"
+          class="todo"
+          :key="todo.id"
+          :class="{ completed: todo.completed, editing : todo === editedTodo}"
+        >
+        </li>
+        <div class="view">
+          <!-- v-model (체크박스의 상태(체크,언체크) todo.completed값 바인딩  -->
+          <input class="toggle" type="checkbox" v-model="todo.completed">
+          <!-- 더블클릭 시 편집 모드로 전환 -->
+          <label @dblclick="editedTodo(todo)">{{ todo.title }}</label>
+          <button class="destroy" @click="removeTodo(todo)"></button>
+        </div>
+
+
+      </ul>
+    </section>
+
+  </section>
+
+
 
 </template>
 
 <style scoped>
-
+@import "https://unpkg.com/todomvc-app-css@2.4.1/index.css";
 </style>
