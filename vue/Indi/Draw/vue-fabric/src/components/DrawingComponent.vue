@@ -1,13 +1,12 @@
 <template>
+  <div class="drawing-container">
     <canvas id="canvas"></canvas>
-     <!-- 해당 버튼 새로고침 후 다시 눌러보면 이전 버전 text 남아있음 (**) -->
       <button id="drawing-mode" class="btn btn-info">그리기 모드 취소</button><br>
       <button id="clear-canvas" class="btn btn-info">지우기</button><br>
     <div>
-      <!--  해당 div canvas 오른쪽으로 이동시키기 (**)-->
       <div id="drawing-mode-options" style="display: inline-block; margin-left: 10px">
         <label for="drawing-mode-selector">Mode:</label>
-        <select id="drawing-mode-selector">
+        <select id="drawing-mode-selector" style="margin: 2px">
           <option>Pencil</option>
           <option>Circle</option>
           <option>Spray</option>
@@ -35,6 +34,7 @@
         <span class="info">{{ shadowOffset }}</span><input type="range" v-model="shadowOffset"  value="0" min="0" max="50" id="drawing-shadow-offset"><br>
       </div>
     </div>
+  </div>
 </template>
 
 <script setup>
@@ -187,7 +187,7 @@ onMounted(() => {
 
   drawingModeEl.value.onclick = () => {
     fabricCanvas.isDrawingMode = !fabricCanvas.isDrawingMode;
-    drawingModeEl.value.innerHTML = fabricCanvas.isDrawingMode ? 'Cancel drawing mode' : 'Enter drawing mode';
+    drawingModeEl.value.innerHTML = fabricCanvas.isDrawingMode ? '그리기 모드 취소' : '그리기 모드';
     drawingOptionsEl.value.style.display = fabricCanvas.isDrawingMode ? '' : 'none';
   };
 
@@ -221,15 +221,20 @@ onMounted(() => {
 
 
 <style>
-/* 필요한 스타일 추가 */
 
 #canvas {
-  width:1000px;
-  height:1000px;
+  width: 600px;
+  height: 600px;
   border: 1px solid rgb(170, 170, 170);
-  position: absolute;
-  touch-action: none;
-  user-select: none;
-  cursor: crosshair;
 }
+
+#drawing-mode-options {
+  margin-left: 20px;
+}
+
+.drawing-container {
+  display: flex;
+  justify-content: space-between;
+}
+
 </style>
