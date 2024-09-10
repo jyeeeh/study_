@@ -12,7 +12,6 @@
           <option>Circle</option>
           <option>Spray</option>
           <option>Pattern</option>
-          <!--     hline ~ diamond 오류(**)    -->
           <option>hline</option>
           <option>vline</option>
           <option>square</option>
@@ -21,8 +20,7 @@
         </select><br>
 
         <label for="drawing-line-width">Line width:</label>
-        <!--  숫자 고정 값으로 되어있음 (**)    -->
-        <span class="info">7</span><input type="range" value="30" min="0" max="150" id="drawing-line-width"><br>
+        <span class="info">{{ lineWidth }}</span><input type="range" v-model="lineWidth" value="30" min="0" max="150" id="drawing-line-width"><br>
 
         <label for="drawing-color">Line color:</label>
         <input type="color" value="#ffa2d8" id="drawing-color"><br>
@@ -31,12 +29,10 @@
         <input type="color" value="#ff89cd" id="drawing-shadow-color"><br>
 
         <label for="drawing-shadow-width">Shadow width:</label>
-        <!--  숫자 고정 값으로 되어있음 (**)    -->
-        <span class="info">5</span><input type="range" value="0" min="0" max="50" id="drawing-shadow-width"><br>
+        <span class="info">{{ shadowWidth }}</span><input type="range" v-model="shadowWidth" value="0" min="0" max="50" id="drawing-shadow-width"><br>
 
         <label for="drawing-shadow-offset">Shadow offset:</label>
-        <!--  숫자 고정 값으로 되어있음 (**)    -->
-        <span class="info">0</span><input type="range" value="0" min="0" max="50" id="drawing-shadow-offset"><br>
+        <span class="info">{{ shadowOffset }}</span><input type="range" v-model="shadowOffset"  value="0" min="0" max="50" id="drawing-shadow-offset"><br>
       </div>
     </div>
 </template>
@@ -46,13 +42,13 @@ import { onMounted, ref } from 'vue';
 import * as fabric from 'fabric';
 
 const canvasId = 'canvas';
-const brushOptions = {
-  vline: 'Vertical Line',
-  hline: 'Horizontal Line',
-  square: 'Square',
-  diamond: 'Diamond',
-  texture: 'Texture'
-};
+// const brushOptions = {
+//   vline: 'Vertical Line',
+//   hline: 'Horizontal Line',
+//   square: 'Square',
+//   diamond: 'Diamond',
+//   texture: 'Texture'
+// };
 
 const canvas = ref(null);
 const drawingModeEl = ref(null);
@@ -65,10 +61,15 @@ const drawingShadowOffset = ref(null);
 const clearEl = ref(null);
 const drawingModeSelector = ref(null);
 
+const lineWidth = ref(1);
+const shadowWidth = ref(0);
+const shadowOffset = ref(0);
+
 onMounted(() => {
   const fabricCanvas = new fabric.Canvas(canvasId, {
     isDrawingMode: true
   });
+
   fabric.Object.prototype.transparentCorners = false;
 
   const $ = id => document.getElementById(id);
@@ -91,7 +92,7 @@ onMounted(() => {
   };
 
   const vLinePatternBrush = setPatternBrush('vline', () => {
-    const patternCanvas = fabric.document.createElement('canvas');
+    const patternCanvas = document.createElement('canvas');
     patternCanvas.width = patternCanvas.height = 10;
     const ctx = patternCanvas.getContext('2d');
     ctx.strokeStyle = fabricCanvas.freeDrawingBrush.color;
@@ -105,7 +106,7 @@ onMounted(() => {
   });
 
   const hLinePatternBrush = setPatternBrush('hline', () => {
-    const patternCanvas = fabric.document.createElement('canvas');
+    const patternCanvas = document.createElement('canvas');
     patternCanvas.width = patternCanvas.height = 10;
     const ctx = patternCanvas.getContext('2d');
     ctx.strokeStyle = fabricCanvas.freeDrawingBrush.color;
@@ -119,7 +120,7 @@ onMounted(() => {
   });
 
   const squarePatternBrush = setPatternBrush('square', () => {
-    const patternCanvas = fabric.document.createElement('canvas');
+    const patternCanvas = document.createElement('canvas');
     patternCanvas.width = patternCanvas.height = 12;
     const ctx = patternCanvas.getContext('2d');
     ctx.fillStyle = fabricCanvas.freeDrawingBrush.color;
@@ -128,7 +129,7 @@ onMounted(() => {
   });
 
   const diamondPatternBrush = setPatternBrush('diamond', () => {
-    const patternCanvas = fabric.document.createElement('canvas');
+    const patternCanvas = document.createElement('canvas');
     const rect = new fabric.Rect({
       width: 10,
       height: 10,
@@ -227,8 +228,6 @@ onMounted(() => {
   height:1000px;
   border: 1px solid rgb(170, 170, 170);
   position: absolute;
-  left: 0px;
-  top: 0px;
   touch-action: none;
   user-select: none;
   cursor: crosshair;
