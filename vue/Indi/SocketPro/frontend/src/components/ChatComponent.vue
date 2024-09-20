@@ -28,13 +28,14 @@ export default {
         console.log('Connected to WebSocket server');
 
         // 서버에 session Id 요청
-        socket.send('GET_SESSION_ID');
+        // socket.send('GET_SESSION_ID');
       };
 
       socket.onmessage = (event) => {
         if (event.data.startsWith('SESSION_ID')) {
           sessionId = event.data.split(':')[1].trim(); // 세션 ID 저장
         } else{
+          // 일반 메세지 추가
           messages.value.push(event.data);
         }
       };
@@ -59,6 +60,7 @@ export default {
         // 세션 ID와 메시지를 함께 보내기
         const messageToSend = `[${sessionId}] ${newMessage.value}`;
         socket.send(messageToSend);
+        messages.value.push(messageToSend); // 보낸 메시지를 메시지 목록에 추가
         newMessage.value = '';
       }
     };
