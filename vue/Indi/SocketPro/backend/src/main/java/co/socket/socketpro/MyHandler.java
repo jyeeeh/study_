@@ -19,7 +19,8 @@ public class MyHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         // 최초 연결 시 session 객체 저장 -> 다른 session 객체들에게 알림 보내기
         final String sessionId = session.getId();
-        final String enteredMessage = sessionId + " 학생이 입장했습니다.";
+        session.sendMessage(new TextMessage("SESSION_ID: " + sessionId));
+        final String enteredMessage = "[" + sessionId + "]님 로그인";
         // 세션 객체 저장
         sessions.put(sessionId, session);
 
@@ -54,7 +55,7 @@ public class MyHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         final String sessionId = session.getId();
-        final String leaveMessage = sessionId + " 학생 로그아웃";
+        final String leaveMessage = "[" + sessionId + " ]님 로그아웃";
         sessions.remove(sessionId); // map에 저장되어있는 객체 remove
 
         //메세지 전송
