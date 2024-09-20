@@ -49,3 +49,6 @@ out/
 
 # Spring Boot specific
 spring.log
+
+/src/main/resources/static/
+/src/main/resources/templates/
