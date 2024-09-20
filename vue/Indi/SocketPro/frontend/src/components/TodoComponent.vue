@@ -26,16 +26,21 @@ const fetchTodos = async () => {
   todos.value = response.data;
 };
 
+// 할 일 추가
 const addTodo = async () => {
   await axios.post('/api/todo', newTodo.value);
-  fetchTodos();
+  fetchTodos(); // 최신 상태 유지
   newTodo.value = { item: '', date: new Date().toISOString().slice(0, 10) };
 };
 
+// 할 일 삭제
 const deleteTodo = async (id) => {
   console.log("Deleting todo with ID:", id);  // 추가된 로그
   if (id) {
+    // 삭제버튼 클릭 -> deleteTodo 함수 호출 -> 할 일 ID값 deleteTodo 함수에 전달
+    // 응답 올 때까지 비동기 작업 수행
     await axios.delete(`/api/todo/${id}`);
+    // 응답 O -> fetchTodos()로 최신 패치
     fetchTodos();
   } else {
     console.error("Invalid ID:", id);

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class WebController {
 
-    @GetMapping("/vue")
+    @GetMapping("/")
     public String vue() {
         return "vue/index";  // templates/vue/index.html을 반환
     }
